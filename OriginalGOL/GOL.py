@@ -98,6 +98,10 @@ def updateBoard(board):
                 board[i][j] = 0
 
 
+                
+    
+
+
 # Define Constants
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 1000
@@ -110,8 +114,19 @@ board,liveCells = boardInit()
 pygame.init()
 
 # Set up the drawing window
-screen = pygame.display.set_mode([500, 500])
+screen = pygame.display.set_mode([SCREEN_WIDTH,SCREEN_HEIGHT])
+screen.fill((255, 255, 255))
+pygame.display.flip()
 
+# Create a surface and pass in a tuple containing its length and width
+surf = pygame.Surface((50, 50))
+
+# Give the surface a color to separate it from the background
+surf.fill((0, 0, 0))
+rect = surf.get_rect()
+
+screen.blit(surf, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
+pygame.display.flip()
 # Run until the user asks to quit
 running = True
 while running:
@@ -120,15 +135,22 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
-    # Fill the background with white
-    screen.fill((255, 255, 255))
-
-    # Draw a solid blue circle in the center
-    pygame.draw.circle(screen, (0, 0, 255), (250, 250), 75)
-
-    # Flip the display
+    
+    updateBoard(board)
+    pixelHeight = int(SCREEN_WIDTH/(BWIDTH))
+    pixelWidth = int(SCREEN_WIDTH/(BHEIGHT))
+    for i in range(0, len(board)):
+        for j in range(0,len(board[i])):
+            if board[i][j]==1:
+                surf = pygame.Surface((pixelHeight,pixelWidth))
+                surf.fill((255,255,255))
+                screen.blit(surf,(pixelHeight*i, pixelWidth*j))
+            else:
+                surf = pygame.Surface((pixelHeight,pixelWidth))
+                surf.fill((0,0,0))
+                screen.blit(surf, (pixelHeight*i, pixelWidth*j))
     pygame.display.flip()
 
 # Done! Time to quit.
 pygame.quit()
+
