@@ -1,6 +1,7 @@
 import pygame
 import random
 import time
+import numpy as np
 from pygame.locals import *
 
 from pygame.locals import (
@@ -10,11 +11,7 @@ from pygame.locals import (
 
 def boardInit():
     liveCells = []
-    board = []
-    for i in range(0,BWIDTH):
-        board.append([])
-        for j in range(0,BHEIGHT):
-            board[i].append(0)
+    board = np.zeros((BDIM*BDIM)).reshape((BDIM,BDIM))
         
     for i in range(0,SEED):
         randX = random.randint(1,len(board)-1) #boundary will always be dead cells (0, and 11)
@@ -105,8 +102,7 @@ def updateBoard(board):
 # Define Constants
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 1000
-BWIDTH = int(input("Width: "))+2
-BHEIGHT = int(input("Height: "))+2
+BDIM = int(input("Width: "))+2
 SEED = int(input("Seed Population: "))
 
 #initialize
@@ -137,8 +133,8 @@ while running:
             running = False
     
     updateBoard(board)
-    pixelHeight = int(SCREEN_WIDTH/(BWIDTH))
-    pixelWidth = int(SCREEN_WIDTH/(BHEIGHT))
+    pixelHeight = int(SCREEN_WIDTH/(BDIM))
+    pixelWidth = int(SCREEN_WIDTH/(BDIM))
     for i in range(0, len(board)):
         for j in range(0,len(board[i])):
             if board[i][j]==1:
